@@ -1,0 +1,196 @@
+<!DOCTYPE html> 
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="get movie info">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+
+    <meta charset=utf-8 />
+    <title>DataTables - Movies</title>
+  </head>
+<body>
+    <div class="container">
+        <table id="example" class="display nowrap" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>column</th>
+                </tr>
+            </tfoot>
+
+            <tbody>
+                <tr>
+                    <td>user1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user2</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user3</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user4</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user5</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user6</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user7</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user8</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user9</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user10</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>user11</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+  
+                <tr>
+                    <td>user12</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+             
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>user13</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+               
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+
+
+
+<script>
+         var sampleReturn = { "Title": "Seven Samurai", "Year": "1954", "Rated": "UNRATED", "Released": "19 Nov 1956", "Runtime": "207 min", "Genre": "Adventure, Drama", "Director": "Akira Kurosawa", "Writer": "Akira Kurosawa (screenplay), Shinobu Hashimoto (screenplay), Hideo Oguni (screenplay)", "Actors": "Toshirô Mifune, Takashi Shimura, Keiko Tsushima, Yukiko Shimazaki", "Plot": "A poor village under attack by bandits recruits seven unemployed samurai to help them defend themselves.", "Language": "Japanese", "Country": "Japan", "Awards": "Nominated for 2 Oscars. Another 5 wins & 6 nominations.", "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTc5MDY1MjU5MF5BMl5BanBnXkFtZTgwNDM2OTE4MzE@._V1_SX300.jpg", "Metascore": "98", "imdbRating": "8.7", "imdbVotes": "238,165", "imdbID": "tt0047478", "Type": "movie", "Response": "True" };
+            var deferreds = [];
+            var newData = [];
+            $(function ($) {
+                var dt = $("#example").DataTable({
+                    columnDefs:[{targets:[0, -1], width:"150px"}],
+                    columns: [
+                        { data: "imdbID" },
+                        { data: "Title" },
+                        { "data": "Year" }
+                    ],
+                    deferLoading: 0,
+                    deferRendering: true,
+                    "order": [[ 1, "asc" ]],
+                    ajax: function (data, cb, setting) {
+                        
+                        var curData = $("#example").DataTable().rows().data();
+                      
+                        $("#example").DataTable().clear();
+                        $.each(curData, function (i, item) { 
+                            var sr = { i: item.imdbID, plot:"short", r:"json", "tomatoes":true};
+                            deferreds.push(
+                            $.get("http://www.omdbapi.com/", sr)
+                            .then(function (response) {
+                               
+                                newData[newData.length] = response;
+                            })
+                        );
+                        });
+
+                      
+                        $.when.apply(null, deferreds)
+                           .done(function () {
+                               cb({ data: newData });
+                         });
+                    }
+                });
+            });
+</script>
