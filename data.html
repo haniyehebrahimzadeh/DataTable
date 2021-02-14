@@ -1,0 +1,208 @@
+<html lang="en"> 
+
+<head> 
+	<meta charset="UTF-8"> 
+	<title>GFG User Details</title> 
+
+    <!-- INCLUDING JQUERY-->
+   
+    <script src= "https://code.jquery.com/jquery-3.5.1.js"> </script>
+   
+
+	<!-- CSS FOR STYLING THE PAGE -->
+	<style> 
+		table { 
+			margin: 0 auto; 
+			font-size: large; 
+			border: 1px solid black; 
+		} 
+
+	
+
+		td { 
+			background-color: #E4F5D4; 
+			border: 1px solid black; 
+		} 
+
+		th, 
+		td { 
+			font-weight: bold; 
+			border: 1px solid black; 
+			padding: 10px; 
+			text-align: center; 
+		} 
+
+		td { 
+			font-weight: lighter; 
+        }
+        
+        .m-a{
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        input{
+            margin: auto
+        }
+ .my-selection{
+     text-align: center;
+     margin-bottom: 50px;
+     font-size: 18px;
+ }
+
+	</style> 
+</head> 
+
+<body> 
+	<section> 
+       
+        <div class="m-a">
+            <input id="myInput" type="text" placeholder="Search..">
+        </div> 
+        
+
+                  <div class="my-selection">
+                    <select id='select'>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                        <option value="6"></option>
+                        <option value="7"></option>
+                    </select>
+                </div>
+                  
+		<!-- TABLE CONSTRUCTION-->
+		<table id='table'> 
+			<!-- HEADING FORMATION -->
+			<tr> 
+				<th>id</th> 
+				<th>user</th> 
+				<th>Coding Score</th> 
+				<th>email</th> 
+			</tr> 
+
+			<script> 
+				$(document).ready(function () { 
+                   
+
+					// FETCHING DATA FROM JSON FILE 
+					$.getJSON("https://jsonplaceholder.typicode.com/users", 
+							function (data) { 
+                        var student = ''; 
+                        var person ='';
+
+						// ITERATING THROUGH OBJECTS 
+						$.each(data, function (key, value) { 
+
+							//CONSTRUCTION OF ROWS HAVING 
+							// DATA FROM JSON OBJECT 
+							student += '<tr>'; 
+							student += '<td>' + 
+                                value.id + '</td>';
+                                 
+
+							student += '<td>' + 
+                                value.name + '</td>'; 
+                                //person
+                                
+                                person += '<td>' + 
+                                value.name+'</option>';
+
+							student += '<td>' + 
+								value.username + '</td>'; 
+
+							student += '<td>' + 
+								value.email + '</td>'; 
+
+							student += '</tr>'; 
+						}); 
+						
+						//INSERTING ROWS INTO TABLE 
+                        $('#table').append(student);
+                        // $('option').append(person); 
+                    //    for(i=0 ; i<6 ;i++)
+                           
+                            $('option').append('person');  
+                         
+					}); 
+				}); 
+			</script> 
+    </section> 
+    <script> 
+ 
+
+            $(document).ready(function () { 
+
+                // FETCHING DATA FROM JSON FILE 
+                $.getJSON("gfgdetails.json",  
+                        function (data) { 
+                    var student = ''; 
+
+                    // ITERATING THROUGH OBJECTS 
+                    $.each(data, function (key, value) { 
+
+                        //CONSTRUCTION OF ROWS HAVING 
+                        // DATA FROM JSON OBJECT 
+                        student += '<tr>'; 
+                        student += '<td>' +  
+                            value.GFGUserName + '</td>'; 
+
+                        student += '<td>' +  
+                            value.NoOfProblems + '</td>'; 
+
+                        student += '<td>' +  
+                            value.TotalScore + '</td>'; 
+
+                        student += '<td>' +  
+                            value.Articles + '</td>'; 
+
+                        student += '</tr>'; 
+                    }); 
+                      
+                    //INSERTING ROWS INTO TABLE  
+                    $('#table').append(student);
+                    i=0 
+                    $('option').append('person('+i+')'); 
+                    i++
+                }); 
+            }); 
+
+
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+
+        
+
+
+          
+//   $(".dropdown-a").click( function() {
+//     var value2 = $(this).val()
+//     $("#table tr").filter(function() {
+//       $(this).toggle($(this).text().indexOf(value2) > -1)
+//     });
+//   });
+
+ 
+ $('#select').change(function() {
+   var selection = $(this).val();
+    var dataset = $('table').find('tr');
+   dataset.show();
+   dataset.filter(function(index, item) {
+     return $(item).find('td:first-child').text().split(',').indexOf(selection) === -1;
+   }).hide();
+
+ });
+
+
+        </script> 
+</section> 
+</body> 
+
+</html> 
